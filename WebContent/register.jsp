@@ -5,6 +5,14 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
+	/* create table members
+	(
+		user_name		varchar(20),
+		user_pwd		varchar(20),
+		user_email		varchar(100)
+	) */
+	
+	
 	String userName = request.getParameter("userName");
 	String userPwd = request.getParameter("userPwd");
 	String userEmail = request.getParameter("userEmail");
@@ -13,6 +21,8 @@
 	Connection con = null;
 	PreparedStatement pstmt = null;
 	
+	
+	// DB 연결 
 	try {
 		Class.forName("com.mysql.jdbc.Driver");
 		con = DriverManager.getConnection(dbUrl, "root", "spring1234");
@@ -24,6 +34,7 @@
 		System.out.println("SQL");
 	}
 	
+	// 회원가입(insert)
 	String sql = "insert into members values(?, ?, ?)";
 	try {
 		pstmt = con.prepareStatement(sql);
@@ -35,5 +46,4 @@
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	
 %>
