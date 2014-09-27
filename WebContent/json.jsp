@@ -3,21 +3,8 @@
 
 <%
 
-	//String recvMessage = request.getParameter("msg");
-
-	JSONObject jsonMain = new JSONObject();
-	JSONArray jArray = new JSONArray();
+	String userName = request.getParameter("userName");
 	
-	JSONObject jObject = new JSONObject();
-
-	jObject.put("msg1", "111");
-	jObject.put("msg2", "메시지2!");
-	jObject.put("msg3", "3번째 메시지!");
-	
-	jArray.add(0, jObject);
-
-	jsonMain.put("List", jArray);
-	
-	out.println(jsonMain.toJSONString());
+	out.println(userName);
 	
 %>
