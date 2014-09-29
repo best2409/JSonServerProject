@@ -6,3 +6,9 @@ create table members
 )
 
 select * from members
+
+delete from members
+where user_name is null
+
+INSERT INTO MEMBERS
+VALUES('ADMIN', '1234', 'AA@BB.COM')

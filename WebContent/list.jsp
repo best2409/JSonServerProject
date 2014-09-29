@@ -1,33 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
-<%@ page import="exam.member.*" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%
-	/* create table members
-	(
-		user_name		varchar(20),
-		user_pwd		varchar(20),
-		user_email		varchar(100)
-	) */
-	
-	
-	String userName = request.getParameter("userName");
-	String userPwd = request.getParameter("userPwd");
-	String userEmail = request.getParameter("userEmail");
-	
-	/* String userName ="n";
-	String userPwd ="p";
-	String userEmail ="e"; */
-	
+<%@ page import="org.json.simple.*" %>
+ <%
 	String dbUrl = "jdbc:mysql://localhost:3306/spring";
 	Connection con = null;
 	PreparedStatement pstmt = null;
-
+	ResultSet rs = null;
 	
-	
-	//DBControl con = new DBControl();
 	// DB 연결 
 	try {
 		Class.forName("com.mysql.jdbc.Driver");
@@ -40,24 +20,42 @@
 		System.out.println("SQL");
 	}
 	
-	// 회원가입(insert)
-	String sql = "insert into members values(?, ?, ?)";
+	// 회원리스트 (select)
+	JSONArray arrayObj = new JSONArray();
+	JSONObject obj = null;
+	
+	String sql = "select * from members";
 	try {
 		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, userName);
-		pstmt.setString(2, userPwd);
-		pstmt.setString(3, userEmail);
-		pstmt.executeUpdate();
+		
+		rs = pstmt.executeQuery();
+		
+		// rs -> json
+		while(rs.next()) {
+			obj = new JSONObject();
+			obj.put("userName", rs.getString("user_name"));
+			obj.put("userPwd", rs.getString("user_pwd"));
+			obj.put("userEmail", rs.getString("user_email"));
+			
+			arrayObj.add(obj);
+		}
+		
+		out.print(arrayObj);
+		
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
-	
 	try {
+		rs.close();
+		pstmt.close();
+		con.close();
+		
+		rs = null;
 		pstmt = null;
 		con = null; 
 	} catch(Exception e) {
 		
-	}
+	} 
 %>
